@@ -76,3 +76,25 @@ rule preserves delivery retries and separate product conditions, but permits a
 repeat only below the last confirmed delivery price. The regression includes
 a restart and a lower-price follow-up. All 56 tests and Ruff passed locally.
 Manual Chrome alerts must share the VPS delivery state and lock.
+
+## Private session restore
+
+Revision `0fbf8ad` adds an optional private storage-state file, restored before
+the first navigation on every sweep. The two new real-browser regressions
+failed before implementation. They check cookie-gated requests across two CLI
+runs and invalid JSON without navigation or secret disclosure on either output
+stream. All 58 tests and Ruff passed locally and on the VPS. A separate
+read-only review found no Critical or Important issues.
+
+The dedicated monitor profile was opened locally in standard Chrome. After
+normal Best Buy email verification, a product page loaded. Best Buy-only state
+was exported privately. One headed VPS import test returned HTTP 200 with the
+correct product data, but access failed again after restart and in later tests.
+Loading the file on every run is deployed, but the real cron wrapper's focused
+dry run at `2026-11-05T04:38:20Z` still collected zero pages and offers. Standard
+Google Chrome 157 on the ARM VPS also returned the HTTP/2 error.
+
+This is not a reliable source-access fix. Automatic collection remains blocked,
+and the PR remains in draft. No live-source success is inferred from unit tests
+or the one successful import probe. The Best Buy API key is still pending its
+separate approval process.
