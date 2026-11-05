@@ -1,0 +1,486 @@
+[
+  {
+    "@type": "Product",
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "Screen Size",
+        "value": "16 inches"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Screen Resolution",
+        "value": "2880 x 1800"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Touch Screen",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Refresh Rate",
+        "value": "120Hz"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Brightness",
+        "value": "500 nits"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Processor Model",
+        "value": "AMD Ryzen AI 400 Series"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "CPU Base Clock Frequency",
+        "value": "2 gigahertz"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Storage Type",
+        "value": "SSD"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Total Storage Capacity",
+        "value": "1000 gigabytes"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "System Memory (RAM)",
+        "value": "32 gigabytes"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Graphics",
+        "value": "AMD Radeon"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Display Connector(s)",
+        "value": "1 x HDMI 2.1"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Battery Chemistry",
+        "value": "Lithium-ion"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "2-in-1 Design",
+        "value": "false"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Backlit Keyboard",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Brand",
+        "value": "ASUS"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Model Number",
+        "value": "UM5606GA-ZB/S16_90"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Product Name",
+        "value": "Zenbook S16 16\" 3K OLED Touchscreen Laptop - AMD Ryzen AI 9 465 2026 - 32GB Memory - 1TB Storage - Copilot+ PC"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Color",
+        "value": "Antrim Gray"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Year of Release",
+        "value": "2026"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Display Type",
+        "value": "OLED"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Screen Size",
+        "value": "16 inches"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Screen Resolution",
+        "value": "2880 x 1800"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Touch Screen",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Refresh Rate",
+        "value": "120Hz"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Brightness",
+        "value": "500 nits"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Processor Brand",
+        "value": "AMD"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Processor Model",
+        "value": "AMD Ryzen AI 400 Series"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Processor Model Number",
+        "value": "Ryzen AI 9 465"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "CPU Base Clock Frequency",
+        "value": "2 gigahertz"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "CPU Boost Clock Frequency",
+        "value": "5 gigahertz"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Number of CPU Cores",
+        "value": "10-core"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Number of CPU Threads",
+        "value": "20"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Neural Processing Unit (NPU)",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Maximum NPU Performance",
+        "value": "50 trillions operations per second"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Storage Type",
+        "value": "SSD"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Total Storage Capacity",
+        "value": "1000 gigabytes"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Solid State Drive Capacity",
+        "value": "1000 gigabytes"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Solid State Drive Interface",
+        "value": "PCIe 4.0"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "System Memory (RAM)",
+        "value": "32 gigabytes"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Type of Memory (RAM)",
+        "value": "LPDDR5X"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "System Memory RAM Speed",
+        "value": "8533 megahertz"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Graphics Type",
+        "value": "Integrated"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "GPU Brand",
+        "value": "AMD Radeon"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Graphics",
+        "value": "AMD Radeon"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Operating System",
+        "value": "Windows 11 Home"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Display Connector(s)",
+        "value": "1 x HDMI 2.1"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Number of HDMI Outputs (Total)",
+        "value": "1"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "USB Ports",
+        "value": "1 x USB-A 3.2, 2 x USB-C 4"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Number of USB Ports (Total)",
+        "value": "3"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Number of USB-A Charging Ports",
+        "value": "1"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Number of USB-C Charging Ports",
+        "value": "2"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Headphone Jack",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Microphone Input",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Wireless Connectivity",
+        "value": "Wi-Fi, Bluetooth"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Wireless Standard",
+        "value": "BE"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Wireless Networking Standard",
+        "value": "Wi-Fi 7"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "CPU Cooling System",
+        "value": "Air"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Power Supply Input",
+        "value": "USB-C"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Power Supply Maximum Wattage",
+        "value": "68 watts"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Battery Cells",
+        "value": "4-cell"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Battery Chemistry",
+        "value": "Lithium-ion"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Front-Facing Camera",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Front Facing Camera Video Resolution",
+        "value": "1080p"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Built-In Microphone",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "2-in-1 Design",
+        "value": "false"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Backlit Keyboard",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Touchpad Type",
+        "value": "Precision"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Media Card Reader",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Audio Technology",
+        "value": "Dolby Atmos, Smart Amp Technology"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Windows AI",
+        "value": "Copilot+ PC"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Security Features",
+        "value": "Facial recognition"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Casing Material",
+        "value": "Aluminum"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Product Height",
+        "value": "0.51 inches"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Product Width",
+        "value": "13.92 inches"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Product Depth",
+        "value": "9.57 inches"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Product Weight",
+        "value": "3.42 pounds"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "ENERGY STAR Certified",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "EPEAT Registered",
+        "value": "true"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "EPEAT Level",
+        "value": "Gold"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Included Software",
+        "value": "ASUS Recovery, StoryCube, MyASUS, ScreenXpert, GlideX"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Numeric Keypad",
+        "value": "false"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Warranty - Parts",
+        "value": "1 year"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Warranty - Labor",
+        "value": "1 year"
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "UPC",
+        "value": "199291382374"
+      }
+    ],
+    "model": "UM5606GA-ZB/S16_90",
+    "name": "ASUS - Zenbook S16 16\" 3K OLED Touchscreen Laptop - AMD Ryzen AI 9 465 2026 - 32GB Memory - 1TB Storage - Copilot+ PC - Antrim Gray",
+    "offers": [
+      {
+        "availability": "https://schema.org/InStock",
+        "description": "New",
+        "itemCondition": "https://schema.org/NewCondition",
+        "price": 1499.99,
+        "priceCurrency": "USD",
+        "seller": {
+          "@type": "Organization",
+          "name": "Best Buy"
+        },
+        "sku": "6671012"
+      },
+      {
+        "availability": "https://schema.org/InStock",
+        "description": "Open-Box Excellent",
+        "itemCondition": "https://schema.org/UsedCondition",
+        "price": 1294.99,
+        "priceCurrency": "USD",
+        "seller": {
+          "@type": "Organization",
+          "name": "Best Buy"
+        },
+        "sku": "6671012"
+      },
+      {
+        "availability": "https://schema.org/InStock",
+        "description": "Open-Box Good",
+        "itemCondition": "https://schema.org/UsedCondition",
+        "price": 1264.99,
+        "priceCurrency": "USD",
+        "seller": {
+          "@type": "Organization",
+          "name": "Best Buy"
+        },
+        "sku": "6671012"
+      },
+      {
+        "availability": "https://schema.org/InStock",
+        "description": "Open-Box Fair",
+        "itemCondition": "https://schema.org/UsedCondition",
+        "price": 1211.99,
+        "priceCurrency": "USD",
+        "seller": {
+          "@type": "Organization",
+          "name": "Best Buy"
+        },
+        "sku": "6671012"
+      }
+    ],
+    "sku": "6671012",
+    "url": "https://www.bestbuy.com/product/asus-zenbook-s16-16-3k-oled-touchscreen-laptop-amd-ryzen-ai-9-465-2026-32gb-memory-1tb-storage-copilot-pc-antrim-gray/JJGHGPFSKV"
+  }
+]
