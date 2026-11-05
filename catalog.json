@@ -4,6 +4,16 @@
   "searches": ["zephyrus 32gb", "legion 32gb", "gaming laptop 32gb oled", "zenbook 32gb", "yoga 32gb oled", "omnibook ultra 32gb", "galaxy book ultra 32gb", "macbook pro 48gb"],
   "models": [
     {
+      "sku": "6619196",
+      "url": "https://www.bestbuy.com/product/asus-rog-flow-z13-13-4-2-5k-180hz-touch-screen-gaming-laptop-copilot-pc-amd-ryzen-ai-max-395-64gb-memory-1tb-storage-off-black/JJGGLHG8X9",
+      "category": "portable",
+      "target_new_cents": 240000,
+      "target_open_box_cents": 220000,
+      "required_tokens": ["Flow Z13", "Max+ 395", "64GB"],
+      "strengths": "Ryzen AI Max+ 395; 64 GB RAM; 1 TB SSD; 2560x1600 180 Hz touchscreen; 2.65 lb listed weight",
+      "caveats": "LCD screen. Integrated Radeon graphics shares system RAM. Check game benchmarks and memory allocation. Tablet kickstand and detachable keyboard differ from a clamshell laptop. Confirm the keyboard and charger are included and inspect battery wear."
+    },
+    {
       "sku": "6671012",
       "url": "https://www.bestbuy.com/product/asus-zenbook-s16-16-3k-oled-touchscreen-laptop-amd-ryzen-ai-9-465-2026-32gb-memory-1tb-storage-copilot-pc-antrim-gray/JJGHGPFSKV/sku/6671012",
       "category": "portable",
