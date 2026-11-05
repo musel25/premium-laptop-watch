@@ -1,0 +1,47 @@
+{
+  "zip_code": "92154",
+  "note": "Targets are conservative analyst choices, not measured historical lows. Current configuration and local fulfillment must be verified on every run.",
+  "searches": ["zephyrus 32gb", "legion 32gb", "gaming laptop 32gb oled", "zenbook 32gb", "yoga 32gb oled", "omnibook ultra 32gb", "galaxy book ultra 32gb", "macbook pro 48gb"],
+  "models": [
+    {
+      "sku": "6671012",
+      "url": "https://www.bestbuy.com/product/asus-zenbook-s16-16-3k-oled-touchscreen-laptop-amd-ryzen-ai-9-465-2026-32gb-memory-1tb-storage-copilot-pc-antrim-gray/JJGHGPFSKV/sku/6671012",
+      "category": "portable",
+      "target_new_cents": 140000,
+      "target_open_box_cents": 130000,
+      "required_tokens": ["Zenbook S16", "465", "OLED"],
+      "strengths": "Ryzen AI 9 465; 32 GB RAM; 1 TB SSD; 2880x1800 120 Hz OLED; 3.42 lb listed weight; 83 Wh battery",
+      "caveats": "Integrated graphics. Thin chassis limits sustained power. Confirm RAM upgradeability and inspect the open-box unit. Battery capacity is not a measured runtime."
+    },
+    {
+      "sku": "6673558",
+      "url": "https://www.bestbuy.com/product/lenovo-legion-pro-7-16-3k-oled-240hz-gaming-laptop-ryzen-9-9955hx3d-2025-32gb-memory-nvidia-geforce-rtx-5080-1tb-storage-eclipse-black/JJGH3K4J3X/sku/6673558",
+      "category": "gaming",
+      "target_new_cents": 285000,
+      "target_open_box_cents": 265000,
+      "required_tokens": ["Legion Pro 7", "9955HX3D", "RTX 5080"],
+      "strengths": "Ryzen 9 9955HX3D; RTX 5080; 32 GB RAM; 1 TB SSD; 2560x1600 240 Hz OLED; vapor-chamber cooling listed",
+      "caveats": "Heavy gaming chassis. Short battery life. Product title says 3K but the detailed resolution is 2560x1600. Verify GPU power and graphics-memory specifications before purchase."
+    },
+    {
+      "sku": "6613959",
+      "url": "https://www.bestbuy.com/product/asus-rog-zephyrus-g16-16-oled-2-5k-240hz-gaming-laptop-intel-core-ultra-9-32gb-memory-geforce-rtx-5090-2tb-storage-eclipse-gray/JJGGLHJXH7/sku/6613959",
+      "category": "gaming",
+      "target_new_cents": 300000,
+      "target_open_box_cents": 275000,
+      "required_tokens": ["Zephyrus G16", "RTX 5090", "OLED"],
+      "strengths": "RTX 5090; Core Ultra 9; 32 GB RAM; 2 TB SSD; 240 Hz OLED; portable gaming form factor",
+      "caveats": "GPU name alone does not establish performance. Thin chassis can use a lower GPU power limit than larger laptops. Verify power, memory capacity, and RAM upgradeability."
+    },
+    {
+      "sku": "6673590",
+      "url": "https://www.bestbuy.com/product/asus-rog-zephyrus-g16-16-oled-3k-gaming-laptop-intel-core-ultra-9-386h-2026-32gb-memory-geforce-rtx-5080-1tb-storage-eclipse-gray/JJGHGSJZR6/sku/6673590",
+      "category": "gaming",
+      "target_new_cents": 265000,
+      "target_open_box_cents": 240000,
+      "required_tokens": ["Zephyrus G16", "386H", "RTX 5080"],
+      "strengths": "Core Ultra 9 386H; RTX 5080; 32 GB RAM; 1 TB SSD; OLED; portable gaming form factor",
+      "caveats": "Confirm GPU power limit, graphics memory, sustained performance, and RAM upgradeability. Thin gaming models trade sustained performance for size."
+    }
+  ]
+}
