@@ -39,6 +39,12 @@ provides transparent, editable price targets and hardware notes. A browser
 must run on VPS independently of the owner's desktop. Use Best Buy's normal
 international-store selection flow when necessary. No CAPTCHA bypass.
 
+A private session file from the dedicated monitor account may be restored before
+the first browser navigation on each run. This is needed because the tested
+session loaded a product after import but did not survive a browser restart on
+its own. Treat the file as a credential. Keep it outside Git and refresh it
+through normal interactive sign-in when needed.
+
 An API source can be added only with a valid owner-provided developer key.
 Do not collect permanent Best Buy API price history; the API has retention
 restrictions. The first release uses public page observations and keeps only

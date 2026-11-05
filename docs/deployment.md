@@ -18,7 +18,20 @@ replace it with the train project's recipient list.
 
 The token is read from `~/.config/tgvmax-watch/secrets.env` and is never printed.
 The optional `~/.config/premium-laptop-watch/runtime.env` can set
-`LAPTOP_BROWSER_EXECUTABLE`. It must not be committed.
+`LAPTOP_BROWSER_EXECUTABLE` and `LAPTOP_BROWSER_STORAGE_STATE`. It must not be
+committed. For the signed-in monitor session, use:
+
+```sh
+export LAPTOP_BROWSER_STORAGE_STATE="$HOME/.config/premium-laptop-watch/bestbuy-session-state.json"
+```
+
+Set both files to mode `600`. The state file contains login cookies and is a
+credential. Export only the monitor account's Best Buy state from its dedicated
+profile. Keep it out of logs, Git, and shared notes. The collector restores the
+file before its first navigation on each run. Missing or invalid state fails
+the run; it does not fall back to an anonymous session or print file contents.
+An expired session may need interactive verification again. Source-health
+notices report failures; this configuration does not guarantee permanent access.
 
 Browser storage, reports, message receipts, cron logs, and state stay under
 `~/.local/state/premium-laptop-watch/`. Keep this directory private. Never

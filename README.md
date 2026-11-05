@@ -26,6 +26,11 @@ uv run premium-laptop-watch sweep --dry-run
 uv run premium-laptop-watch status
 ```
 
+A private Best Buy session can be loaded with `--storage-state /private/path.json`
+or `LAPTOP_BROWSER_STORAGE_STATE`. The collector restores it before the first
+request on every run. Keep the file outside the repository with mode `600`.
+Expired sessions require a new interactive sign-in and private export.
+
 The VPS uses a normal Chromium window under Xvfb. `bash scripts/cron.sh` runs
 the same locked command used by cron. See [the deployment runbook](docs/deployment.md).
 

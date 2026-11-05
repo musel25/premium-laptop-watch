@@ -332,6 +332,7 @@ def collect(
     max_products: int = 24,
     search_limit: int | None = None,
     headed: bool = False,
+    storage_state: Path | None = None,
 ) -> Collection:
     config, models = load_catalog(catalog_path)
     errors, offers, discoveries = [], [], []
@@ -370,6 +371,8 @@ def collect(
                     page.wait_for_timeout(1500)
 
         try:
+            if storage_state is not None:
+                context.set_storage_state(storage_state)
             pickup_store = None
             try:
                 visit("https://www.bestbuy.com/site/store-locator")

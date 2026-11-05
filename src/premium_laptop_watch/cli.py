@@ -32,6 +32,12 @@ def main():
     parser.add_argument(
         "--browser", default=os.environ.get("LAPTOP_BROWSER_EXECUTABLE")
     )
+    parser.add_argument(
+        "--storage-state",
+        type=Path,
+        default=os.environ.get("LAPTOP_BROWSER_STORAGE_STATE"),
+        help="Private browser session JSON file; never commit its contents",
+    )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--headed", action="store_true")
     parser.add_argument("--max-products", type=int, default=24)
@@ -50,6 +56,7 @@ def main():
             args.max_products,
             args.search_limit,
             args.headed,
+            args.storage_state,
         )
     except (BrowserError, SourceError, OSError, ValueError) as exc:
         result = Collection([], {}, [f"collector failed: {type(exc).__name__}"], 0, [])
