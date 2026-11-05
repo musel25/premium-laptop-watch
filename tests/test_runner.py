@@ -36,6 +36,39 @@ def sample():
     return model, offer
 
 
+def test_alert_limit_is_applied_after_deduplication(tmp_path):
+    model, offer = sample()
+    models = {f"sku{i}": replace(model, sku=f"sku{i}") for i in range(6)}
+    offers = [replace(offer, sku=f"sku{i}") for i in range(6)]
+    collection = Collection(offers, models, [], 6, [])
+    assert run_sweep(collection, tmp_path, lambda text: 1)["alerts_sent"] == 5
+    assert run_sweep(collection, tmp_path, lambda text: 2)["alerts_sent"] == 1
+
+
+def test_both_categories_receive_alert_slots(tmp_path):
+    model, offer = sample()
+    models = {
+        f"game{i}": replace(model, sku=f"game{i}", category="gaming") for i in range(6)
+    }
+    models["portable"] = replace(model, sku="portable")
+    offers = [replace(offer, sku=sku) for sku in models]
+    messages = []
+
+    def send(text):
+        messages.append(text)
+        return len(messages)
+
+    run_sweep(Collection(offers, models, [], 7, []), tmp_path, send)
+    assert any("| portable" in message for message in messages)
+
+
+def test_missing_price_in_partial_observations_is_degraded(tmp_path):
+    model, offer = sample()
+    incomplete = replace(offer, price_cents=None, condition="excellent")
+    result = Collection([offer, incomplete], {model.sku: model}, [], 2, [])
+    assert run_sweep(result, tmp_path, lambda text: 10)["status"] == "degraded"
+
+
 def test_telegram_uses_one_verified_private_recipient(tmp_path):
     recipient = tmp_path / "recipient.json"
     recipient.write_text(

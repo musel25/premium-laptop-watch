@@ -6,9 +6,15 @@ state_dir="${LAPTOP_STATE_DIR:-$HOME/.local/state/premium-laptop-watch}"
 mkdir -p "$state_dir"
 old_table="$(mktemp)"
 new_table="$(mktemp)"
-trap 'rm -f "$old_table" "$new_table"' EXIT
-if ! crontab -l > "$old_table" 2>/dev/null; then
-    : > "$old_table"
+error_file="$(mktemp)"
+trap 'rm -f "$old_table" "$new_table" "$error_file"' EXIT
+if ! LC_ALL=C crontab -l > "$old_table" 2>"$error_file"; then
+    if LC_ALL=C grep -qi '^no crontab for ' "$error_file"; then
+        : > "$old_table"
+    else
+        printf 'Could not read existing crontab; no installation was attempted.\n' >&2
+        exit 1
+    fi
 fi
 awk '
     $0 == "# BEGIN premium-laptop-watch" { if (inside) exit 2; inside=1; next }

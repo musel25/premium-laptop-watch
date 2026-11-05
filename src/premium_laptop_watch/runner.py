@@ -1,6 +1,7 @@
 """One sweep, private reports, confirmed delivery, and bounded health alerts."""
 
 import json
+from collections import deque
 from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
@@ -27,12 +28,38 @@ def run_sweep(result: Collection, state_dir: Path, send, dry_run: bool = False) 
     for offer in result.offers:
         state.observe(offer)
     qualified = rank(result.offers, result.models)
+    source_errors = list(result.errors)
+    for offer in result.offers:
+        if (
+            offer.price_cents is None
+            or offer.ram_gb is None
+            or not offer.seller
+            or offer.condition == "unknown"
+            or not offer.stock_known
+        ):
+            source_errors.append(
+                f"product {offer.sku}: incomplete price, RAM, seller, or condition evidence"
+            )
     delivery_errors = []
     sent = 0
     if not dry_run:
-        for offer in qualified[:5]:
-            if not state.should_send(offer):
-                continue
+        groups = {}
+        seen = set()
+        for offer in qualified:
+            if state.should_send(offer) and offer.key not in seen:
+                seen.add(offer.key)
+                groups.setdefault(result.models[offer.sku].category, deque()).append(
+                    offer
+                )
+        pending = []
+        while groups and len(pending) < 5:
+            for category in list(groups):
+                if len(pending) == 5:
+                    break
+                pending.append(groups[category].popleft())
+                if not groups[category]:
+                    del groups[category]
+        for offer in pending:
             try:
                 receipt = send(alert_text(offer, result.models[offer.sku]))
                 state.mark_delivered(offer, receipt)
@@ -41,7 +68,7 @@ def run_sweep(result: Collection, state_dir: Path, send, dry_run: bool = False) 
                 delivery_errors.append(f"{offer.sku}: Telegram delivery unconfirmed")
         state.save()
     status = "ok"
-    if result.errors or delivery_errors:
+    if source_errors or delivery_errors:
         status = "degraded"
     if not result.pages_checked or not result.offers:
         status = "failed"
@@ -54,7 +81,7 @@ def run_sweep(result: Collection, state_dir: Path, send, dry_run: bool = False) 
         "offers_checked": len(result.offers),
         "qualified_offers": len(qualified),
         "alerts_sent": sent,
-        "source_errors": result.errors,
+        "source_errors": source_errors,
         "delivery_errors": delivery_errors,
         "discoveries": result.discoveries,
         "offers": [

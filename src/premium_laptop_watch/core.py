@@ -38,6 +38,7 @@ class Offer:
     local_verified: bool
     fulfillment: str
     observed_at: str
+    stock_known: bool = True
 
     @property
     def key(self) -> str:

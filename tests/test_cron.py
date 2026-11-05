@@ -54,3 +54,29 @@ def test_cron_wrapper_prevents_overlapping_sweeps(tmp_path):
         check=False,
     )
     assert result.returncode == 0
+
+
+def test_unreadable_crontab_is_not_replaced(tmp_path):
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    marker = tmp_path / "installed"
+    command = fake_bin / "crontab"
+    command.write_text(
+        '#!/bin/sh\nif [ "$1" = "-l" ]; then echo "permission denied" >&2; exit 1; fi\ntouch "$TEST_INSTALL_MARKER"\n'
+    )
+    command.chmod(0o755)
+    root = Path(__file__).resolve().parents[1]
+    env = dict(
+        os.environ,
+        PATH=f"{fake_bin}:{os.environ['PATH']}",
+        TEST_INSTALL_MARKER=str(marker),
+        LAPTOP_STATE_DIR=str(tmp_path / "state"),
+    )
+    result = subprocess.run(
+        ["bash", str(root / "scripts/install-cron.sh")],
+        env=env,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode != 0
+    assert not marker.exists()

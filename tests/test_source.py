@@ -105,6 +105,12 @@ def test_empty_or_challenge_page_is_a_source_failure():
         parse_products([], {}, "now")
 
 
+def test_product_with_missing_offers_is_an_incomplete_source(product):
+    del product["offers"]
+    with pytest.raises(SourceError):
+        parse_products([product], {}, "now")
+
+
 def test_discovery_qualifies_hardware_instead_of_discount(product):
     model = model_for_product(product, {})
     assert model.category == "portable"

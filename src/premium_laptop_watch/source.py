@@ -2,6 +2,7 @@
 
 import json
 import re
+from collections import deque
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from decimal import Decimal, InvalidOperation
@@ -73,11 +74,13 @@ def parse_products(
             re.IGNORECASE,
         )
         ram = int(ram_match[1]) if ram_match else None
-        offers = product.get("offers", [])
+        if not product.get("offers"):
+            raise SourceError("product offers are missing or incomplete")
+        offers = product["offers"]
         if isinstance(offers, dict):
             offers = [offers]
         for raw in offers:
-            if raw.get("@type") == "AggregateOffer" or "price" not in raw:
+            if raw.get("@type") == "AggregateOffer":
                 continue
             sku = str(product.get("sku", ""))
             if raw.get("sku") and str(raw["sku"]) != sku:
@@ -111,6 +114,15 @@ def parse_products(
                         condition, "ZIP-specific shipping/pickup is unverified"
                     ),
                     observed_at=observed_at,
+                    stock_known=str(raw.get("availability", "")).rsplit("/", 1)[-1]
+                    in {
+                        "InStock",
+                        "OutOfStock",
+                        "SoldOut",
+                        "Discontinued",
+                        "PreOrder",
+                        "BackOrder",
+                    },
                 )
             )
     return result
@@ -209,8 +221,72 @@ def us_url(url: str) -> str:
 SCHEMA_JS = """ss => ss.map(s => { try { return JSON.parse(s.textContent) } catch { return null } }).filter(Boolean)"""
 
 
+def select_product_urls(
+    catalog: dict[str, str], groups: list[list[str]], limit: int
+) -> list[tuple[str, str]]:
+    selected, seen = [], set()
+
+    def add(url, sku=""):
+        parts = urlsplit(url).path.strip("/").split("/")
+        identity = parts[2] if len(parts) >= 3 and parts[0] == "product" else url
+        if identity not in seen and len(selected) < limit:
+            seen.add(identity)
+            selected.append((url, sku))
+
+    for url, sku in catalog.items():
+        add(url, sku)
+    queues = [deque(group) for group in groups if group]
+    while queues and len(selected) < limit:
+        for queue in queues:
+            if queue:
+                add(queue.popleft())
+        queues = [queue for queue in queues if queue]
+    return selected
+
+
+def read_product_documents(page) -> list:
+    page.locator('script[type="application/ld+json"]').first.wait_for(
+        state="attached", timeout=10000
+    )
+    return page.locator('script[type="application/ld+json"]').evaluate_all(SCHEMA_JS)
+
+
+def configure_location(page, zip_code: str, navigate: bool = True) -> str:
+    """Set the search ZIP and select the known nearby California store via UI."""
+    if not re.fullmatch(r"\d{5}", zip_code):
+        raise SourceError("ZIP must have five digits")
+    if navigate:
+        page.goto(
+            us_url("https://www.bestbuy.com/site/store-locator"),
+            wait_until="domcontentloaded",
+            timeout=30000,
+        )
+    field = page.get_by_role(
+        "textbox", name="Enter city and state or zip code", exact=True
+    )
+    field.fill(zip_code, timeout=15000)
+    page.get_by_role("button", name="Update", exact=True).click()
+    page.get_by_role("heading", name=f"Stores Near {zip_code}", exact=True).wait_for(
+        timeout=15000
+    )
+    store = "Otay Ranch"
+    card = (
+        page.locator(".shop-location-card")
+        .filter(has=page.get_by_text(store, exact=True))
+        .first
+    )
+    card.wait_for(timeout=15000)
+    select = card.get_by_role("button", name="Make This Your Store", exact=True)
+    if select.count():
+        select.click()
+    page.get_by_text(f"{store} has been marked as your store", exact=True).wait_for(
+        timeout=15000
+    )
+    return store
+
+
 def fulfillment_from_options(
-    text: str, zip_code: str, prices: dict[str, int]
+    text: str, zip_code: str, prices: dict[str, int], pickup_store: str | None = None
 ) -> dict[str, str]:
     """Require the selected condition's price and a shipping line for the ZIP."""
     result = {}
@@ -235,6 +311,17 @@ def fulfillment_from_options(
         )
         if shipping:
             result[condition] = shipping[0] + "; confirm at checkout"
+        elif pickup_store:
+            pickup = re.search(
+                r"(?m)^Pick up(?! unavailable)[^\n]*\bat\s+"
+                + re.escape(pickup_store)
+                + r"\b[^\n]*",
+                block,
+            )
+            if pickup:
+                result[condition] = (
+                    pickup[0] + f"; store verified near {zip_code}; confirm at checkout"
+                )
     return result
 
 
@@ -250,6 +337,7 @@ def collect(
     errors, offers, discoveries = [], [], []
     pages = 0
     urls = {m.url: m.sku for m in models.values() if m.url}
+    url_groups = []
     browser_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
     zip_code = config["zip_code"]
     observed = datetime.now(UTC).isoformat()
@@ -282,6 +370,14 @@ def collect(
                     page.wait_for_timeout(1500)
 
         try:
+            pickup_store = None
+            try:
+                visit("https://www.bestbuy.com/site/store-locator")
+                pickup_store = configure_location(page, zip_code, navigate=False)
+            except (SourceError, BrowserError):
+                errors.append(
+                    f"location: could not verify ZIP {zip_code} and Otay Ranch through store selection"
+                )
             for query in config.get("searches", [])[:search_limit]:
                 try:
                     visit(
@@ -297,6 +393,7 @@ def collect(
                     )
                     if not links:
                         raise SourceError("no search product links")
+                    candidates = []
                     for item in links:
                         title = item["title"]
                         if (
@@ -308,19 +405,30 @@ def collect(
                             continue
                         url = item["url"].split("?")[0].split("#")[0]
                         if urlsplit(url).hostname == "www.bestbuy.com":
-                            urls.setdefault(url, "")
-                    discoveries.append({"query": query, "links_found": len(links)})
+                            candidates.append(url)
+                    url_groups.append(candidates)
+                    discoveries.append(
+                        {
+                            "query": query,
+                            "links_found": len(links),
+                            "candidate_links": len(candidates),
+                        }
+                    )
                 except (SourceError, BrowserError):
                     errors.append(f"search {query}: page unavailable or changed")
-            for url, expected_sku in list(urls.items())[:max_products]:
+            selected = select_product_urls(urls, url_groups, max_products)
+            discoveries.append(
+                {
+                    "selected_products": len(selected),
+                    "candidate_links": sum(map(len, url_groups)),
+                    "curated_models": len(urls),
+                    "product_limit": max_products,
+                }
+            )
+            for url, expected_sku in selected:
                 try:
                     visit(url)
-                    page.locator('script[type="application/ld+json"]').first.wait_for(
-                        timeout=10000
-                    )
-                    documents = page.locator(
-                        'script[type="application/ld+json"]'
-                    ).evaluate_all(SCHEMA_JS)
+                    documents = read_product_documents(page)
                     products = _products(documents)
                     if not products:
                         raise SourceError("no product data")
@@ -351,13 +459,19 @@ def collect(
                         pass
                     text = page.locator("body").inner_text()
                     main = text.split("Key Accessories:")[0].split("Related Item")[0]
-                    fulfillment = fulfillment_from_options(main, zip_code, prices)
+                    fulfillment = fulfillment_from_options(
+                        main, zip_code, prices, pickup_store=pickup_store
+                    )
                     model = model_for_product(product, models)
                     if model:
                         models[model.sku] = model
                         product_offers = parse_products(
                             [product], fulfillment, observed
                         )
+                        if not product_offers:
+                            errors.append(
+                                f"product {model.sku}: no specific current offers in structured data"
+                            )
                         offers.extend(product_offers)
                         if any(
                             o.available
