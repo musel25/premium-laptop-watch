@@ -209,6 +209,35 @@ def us_url(url: str) -> str:
 SCHEMA_JS = """ss => ss.map(s => { try { return JSON.parse(s.textContent) } catch { return null } }).filter(Boolean)"""
 
 
+def fulfillment_from_options(
+    text: str, zip_code: str, prices: dict[str, int]
+) -> dict[str, str]:
+    """Require the selected condition's price and a shipping line for the ZIP."""
+    result = {}
+    sections = re.split(
+        r"(?m)^(New|Open Box - Excellent|Open Box - Good|Open Box - Fair)\s*$", text
+    )
+    names = {
+        "New": "new",
+        "Open Box - Excellent": "excellent",
+        "Open Box - Good": "good",
+        "Open Box - Fair": "fair",
+    }
+    for i in range(1, len(sections) - 1, 2):
+        condition, block = names[sections[i]], sections[i + 1]
+        price = re.search(r"\$([\d,]+\.\d{2})", block)
+        if not price or _price(price[1].replace(",", ""), "USD") != prices.get(
+            condition
+        ):
+            continue
+        shipping = re.search(
+            r"(?m)^Get it[^\n]*\bto\s+" + re.escape(zip_code) + r"\b[^\n]*", block
+        )
+        if shipping:
+            result[condition] = shipping[0] + "; confirm at checkout"
+    return result
+
+
 def collect(
     catalog_path: Path,
     browser_dir: Path,
@@ -307,19 +336,41 @@ def collect(
                         raise SourceError("unexpected product identity")
                     # Delivery evidence is specific to this selected product and condition.
                     # Never infer excellent open-box availability from new-item shipping.
+                    parsed = parse_products([product], {}, observed)
+                    prices = {
+                        o.condition: o.price_cents
+                        for o in parsed
+                        if o.seller == "Best Buy" and o.price_cents
+                    }
+                    try:
+                        page.get_by_text("Open-Box", exact=True).first.click(
+                            timeout=5000
+                        )
+                        page.wait_for_timeout(2500)
+                    except BrowserError:
+                        pass
                     text = page.locator("body").inner_text()
                     main = text.split("Key Accessories:")[0].split("Related Item")[0]
-                    fulfillment = {}
-                    if zip_code in main and re.search(
-                        r"Shipping\s*[–-]\s*FREE\s*\n(?:Tomorrow|Today|Get it)", main
-                    ):
-                        fulfillment["new"] = (
-                            f"Shipping shown for ZIP {zip_code}; confirm at checkout"
-                        )
+                    fulfillment = fulfillment_from_options(main, zip_code, prices)
                     model = model_for_product(product, models)
                     if model:
                         models[model.sku] = model
-                        offers.extend(parse_products([product], fulfillment, observed))
+                        product_offers = parse_products(
+                            [product], fulfillment, observed
+                        )
+                        offers.extend(product_offers)
+                        if any(
+                            o.available
+                            and o.seller == "Best Buy"
+                            and o.condition in {"new", "excellent"}
+                            and o.price_cents
+                            and o.price_cents <= model.target(o.condition)
+                            and not o.local_verified
+                            for o in product_offers
+                        ):
+                            errors.append(
+                                f"product {model.sku}: target price found but fulfillment to {zip_code} is unverified"
+                            )
                     pages += 1
                 except (SourceError, BrowserError, ValueError, TypeError):
                     errors.append(

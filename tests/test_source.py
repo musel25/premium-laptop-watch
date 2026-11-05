@@ -4,7 +4,12 @@ from pathlib import Path
 
 import pytest
 
-from premium_laptop_watch.source import SourceError, model_for_product, parse_products
+from premium_laptop_watch.source import (
+    SourceError,
+    fulfillment_from_options,
+    model_for_product,
+    parse_products,
+)
 
 
 @pytest.fixture
@@ -12,6 +17,28 @@ def product():
     return json.loads(
         (Path(__file__).parent / "fixtures/zenbook-s16.json").read_text()
     )[0]
+
+
+def test_excellent_shipping_requires_its_own_zip_and_exact_price():
+    text = "New\n$1,499.99\nGet it tomorrow to 92154 • FREE\nAdd to cart\nOpen Box - Excellent\n$1,294.99\nPickup unavailable at Otay Ranch\nGet it by Fri, Nov 6 to 92154 • FREE\nAdd to cart\n"
+    found = fulfillment_from_options(
+        text, "92154", {"new": 149999, "excellent": 129499}
+    )
+    assert set(found) == {"new", "excellent"}
+    assert "92154" in found["excellent"]
+    assert "excellent" not in fulfillment_from_options(
+        text, "55423", {"excellent": 129499}
+    )
+    assert "excellent" not in fulfillment_from_options(
+        text, "92154", {"excellent": 120000}
+    )
+
+
+def test_new_shipping_does_not_prove_open_box_shipping():
+    text = "New\n$1,499.99\nGet it tomorrow to 92154 • FREE\nOpen Box - Excellent\n$1,294.99\nShipping unavailable\nPickup unavailable\n"
+    assert set(
+        fulfillment_from_options(text, "92154", {"new": 149999, "excellent": 129499})
+    ) == {"new"}
 
 
 def test_real_product_preserves_price_condition_seller_and_actual_ram(product):
