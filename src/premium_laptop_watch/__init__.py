@@ -1,0 +1,1 @@
+"""Premium laptop price monitoring."""
