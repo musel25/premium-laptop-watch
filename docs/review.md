@@ -47,3 +47,22 @@ include a real offline browser; they do not prove live Best Buy access.
 One minor remains deferred: failed health-notice delivery is not stored in a
 separate telemetry field. The failed source status is retained, and the notice
 is retried on later runs until delivery succeeds.
+
+## Live acceptance result
+
+Cron executed the revised wrapper at 2026-11-05 02:56:01 UTC. The source check
+failed at 02:56:05 UTC. A full non-dry wrapper run then executed from 02:58:17
+through 02:59:46 UTC. It attempted the eight configured searches and 24 product
+pages. No usable product observations were collected. The failure status was
+saved, and Telegram confirmed the rate-limited health notice. The temporary
+minute-by-minute smoke cron block was removed. The ordinary two-hour job remains.
+
+Desktop Chrome MCP successfully verified two current excellent open-box offers
+with their own shipping options to ZIP 92154: Zenbook S16 SKU 6671012 at
+$1,294.99 and ROG Flow Z13 SKU 6619196 at $2,086.99. These are manual browser
+observations. They do not prove that the VPS collector is healthy.
+
+Automatic collection remains operationally blocked by VPS browser access. The
+PR stays in draft. A stable independent data source or an explicitly selected
+desktop Chrome connection is still required. No API key or paid service has
+been configured.
