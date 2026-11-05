@@ -103,17 +103,22 @@ def test_failed_delivery_remains_eligible_after_restart(tmp_path, offer):
     assert AlertState(path).should_send(offer)
 
 
-def test_explicit_stock_loss_and_return_triggers_one_new_alert(tmp_path, offer):
+def test_stock_loss_and_return_does_not_repeat_same_or_higher_price(tmp_path, offer):
     state = AlertState(tmp_path / "alerts.json")
     state.observe(offer)
     state.mark_delivered(offer, 99)
     state.observe(replace(offer, available=False))
     assert not state.should_send(replace(offer, available=False))
     state.observe(offer)
-    assert state.should_send(offer)
-    state.mark_delivered(offer, 100)
-    state.observe(offer)
+    state.save()
+    state = AlertState(tmp_path / "alerts.json")
     assert not state.should_send(offer)
+    assert not state.should_send(replace(offer, price_cents=155000))
+    improved = replace(offer, price_cents=140000)
+    assert state.should_send(improved)
+    state.mark_delivered(improved, 100)
+    state.observe(improved)
+    assert not state.should_send(improved)
 
 
 def test_conditions_have_independent_delivery_state(tmp_path, offer):

@@ -49,6 +49,22 @@ Price targets are analyst judgments. The alert does not establish a historical
 low or measured performance. Unknown GPU power, battery runtime, upgradeability,
 condition, seller, and regional availability must remain explicit.
 
+## Manual Chrome MCP checks
+
+Desktop Chrome MCP works for interactive checks while the owner's browser and
+this agent session are available. It is not connected to the VPS cron job.
+A successful desktop search does not prove that scheduled collection works.
+
+Manual deal alerts must use the same private `alerts.json` as the VPS job.
+Acquire its `sweep.lock` before reading or changing delivery state. Qualify the
+exact offer, then call `AlertState.should_send` before sending. Call
+`mark_delivered` only after Telegram confirms delivery. Do not reset state or
+send a deal directly through the bot without this check.
+
+The identity is product SKU, condition, and seller. Equal or higher prices
+never repeat. A lower price may trigger another alert. A return to stock alone
+does not qualify for a repeat. This rule applies across days and restarts.
+
 ## Disable and restore
 
 Remove only the block between `# BEGIN premium-laptop-watch` and

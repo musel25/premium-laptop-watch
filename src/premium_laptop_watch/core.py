@@ -124,7 +124,6 @@ class AlertState:
         return (
             "delivered_price" not in entry
             or offer.price_cents < entry["delivered_price"]
-            or entry.get("generation", 0) > entry.get("sent_generation", -1)
         )
 
     def mark_delivered(self, offer: Offer, message_id: int) -> None:

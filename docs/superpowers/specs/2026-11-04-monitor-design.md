@@ -23,7 +23,8 @@ is authorized, merging is not required.
   Never use the train project's multi-recipient list. No tokens, chat IDs, phone
   numbers, browser cookies, or real personal configs in this public repository.
 - Persist deduplication, delivery failures, run status, and the cron job on VPS.
-  A price decrease or return to stock can trigger a new alert. A failed send
+  An offer is sent once and may repeat only at a lower price. A return to stock
+  at the same or a higher price does not trigger a repeat. A failed send
   must not mark an offer delivered. A failed data source must not look like a
   healthy run with no offers. Bound runtime and prevent overlapping runs.
 - Current price targets are conservative analyst choices, not observed

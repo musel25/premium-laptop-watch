@@ -45,7 +45,12 @@ An unknown SKU cannot qualify on a list-price discount alone.
 The collector checks a bounded selection of product pages per run. It allocates
 discovery slots across queries and deduplicates product identities. It does not
 claim exhaustive catalog coverage. Both gaming and portable offers receive alert
-slots. Already delivered prices do not block later offers.
+slots. Previously delivered offers do not consume those slots.
+
+Each product, condition, and seller combination is alerted once. It can repeat
+only at a lower price. Returning to stock at the same or a higher price does
+not trigger another alert, even on a later day. Delivery state survives restarts
+and deployments. Failed sends remain eligible for retry.
 
 An alert needs actual RAM, a specific USD price, a Best Buy seller, an allowed
 condition, stock evidence, and matching-price shipping to the selected ZIP or

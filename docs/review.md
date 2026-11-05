@@ -66,3 +66,13 @@ Automatic collection remains operationally blocked by VPS browser access. The
 PR stays in draft. A stable independent data source or an explicitly selected
 desktop Chrome connection is still required. No API key or paid service has
 been configured.
+
+## Repeat-alert correction
+
+The owner requested no repeated deal unless the price improves. Investigation
+found that the existing stock-return rule could repeat an unchanged or higher
+price. The regression failed on that case before the correction. The updated
+rule preserves delivery retries and separate product conditions, but permits a
+repeat only below the last confirmed delivery price. The regression includes
+a restart and a lower-price follow-up. All 56 tests and Ruff passed locally.
+Manual Chrome alerts must share the VPS delivery state and lock.
